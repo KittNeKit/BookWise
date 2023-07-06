@@ -1,5 +1,6 @@
 from django.core.validators import MinValueValidator
 from django.db import models
+from rest_framework.exceptions import ValidationError
 
 
 class Book(models.Model):
@@ -15,3 +16,19 @@ class Book(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    def clean(self):
+        if self.inventory < 0:
+            raise ValidationError(f"Do not enough {self.title} book in inventory")
+
+    def save(
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None,
+    ):
+        self.full_clean()
+        return super(Book, self).save(
+            force_insert, force_update, using, update_fields
+        )
