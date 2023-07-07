@@ -3,6 +3,7 @@ from rest_framework import serializers
 
 from books.serializers import BooksSerializer
 from borrowings.models import Borrowing
+from borrowings.notification import send_borrowing_create_message
 
 
 class BorrowingSerializer(serializers.ModelSerializer):
@@ -20,7 +21,15 @@ class BorrowingSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data["book_id"].inventory -= 1
         validated_data["book_id"].save()
-        return Borrowing.objects.create(**validated_data)
+
+        borrowing = Borrowing.objects.create(**validated_data)
+
+        send_borrowing_create_message(
+            user=validated_data["user_id"],
+            borrowing=borrowing
+        )
+
+        return borrowing
 
 
 class BorrowingDetailSerializer(BorrowingSerializer):
