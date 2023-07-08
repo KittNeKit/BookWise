@@ -61,18 +61,13 @@ Run the migrations
 python manage.py migrate
 ```
 
-6. Use the following command to load prepared data from fixture to test:
-```bash
-python manage.py loaddata fixture_data.json
-```
-
-7. Start the development server
+6. Start the development server
 
 ```bash
 python manage.py runserver
 ```
 
-8. Access the website locally at http://localhost:8000.
+7. Access the website locally at http://localhost:8000.
 
 ## Run with Docker
 
