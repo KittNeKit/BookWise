@@ -7,8 +7,9 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
 
-from borrowings.models import Borrowing
-from borrowings.serializers import BorrowingSerializer, BorrowingDetailSerializer
+from borrowings.models import Borrowing, Payment
+from borrowings.serializers import BorrowingSerializer, BorrowingDetailSerializer, PaymentSerializer, \
+    PaymentDetailSerializer
 
 
 class BorrowingViewSet(
@@ -68,3 +69,35 @@ class BorrowingViewSet(
             {'error': 'You can not return already returned book.'},
             status.HTTP_403_FORBIDDEN
         )
+
+
+class PaymentViewSet(
+    mixins.RetrieveModelMixin,
+    mixins.ListModelMixin,
+    GenericViewSet
+):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+    authentication_classes = (JWTAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_serializer_class(self):
+        if self.action == "retrieve":
+            return PaymentDetailSerializer
+
+        return PaymentSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+
+        if self.request.user.is_staff == 1:
+            user_id = self.request.query_params.get("user_id")
+
+            if user_id:
+                queryset = queryset.filter(user_id=user_id)
+
+            return queryset
+
+        queryset = queryset.filter(borrowing_id__user_id=self.request.user.id)
+
+        return queryset
