@@ -2,7 +2,7 @@ from django.db import transaction
 from rest_framework import serializers
 
 from books.serializers import BooksSerializer
-from borrowings.models import Borrowing
+from borrowings.models import Borrowing, Payment
 from borrowings.notification import send_borrowing_create_message
 
 
@@ -43,4 +43,34 @@ class BorrowingDetailSerializer(BorrowingSerializer):
             "actual_return_date",
             "book_id",
             "user_id",
+        )
+
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = (
+            "id",
+            "status",
+            "type",
+            "borrowing_id",
+            "session_url",
+            "session_id",
+            "to_pay",
+        )
+
+
+class PaymentDetailSerializer(PaymentSerializer):
+    borrowing_id = BorrowingDetailSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Payment
+        fields = (
+            "id",
+            "status",
+            "type",
+            "borrowing_id",
+            "session_url",
+            "session_id",
+            "to_pay",
         )
