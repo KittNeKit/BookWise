@@ -1,8 +1,9 @@
-from decimal import Decimal
-
 from datetime import timedelta
+from decimal import Decimal
 from typing import Any
 
+import stripe
+from django.utils import timezone
 from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter
 from rest_framework import status, mixins
 from rest_framework.decorators import action
@@ -11,9 +12,6 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from django.utils import timezone
-
-import stripe
 
 from borrowings.models import Borrowing, Payment
 from borrowings.notification import send_notification
