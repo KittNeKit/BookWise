@@ -1,10 +1,13 @@
 from decimal import Decimal
 
 from datetime import timedelta
+from typing import Any
 
+from drf_spectacular.utils import extend_schema_view, extend_schema, OpenApiParameter
 from rest_framework import status, mixins
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -23,6 +26,17 @@ from borrowings.serializers import (
 from borrowings.stripe import create_stripe_session
 
 
+@extend_schema_view(
+    list=extend_schema(
+        description=(
+            "All borrowings in the library endpoint "
+            "(User can see only own borrowings, "
+            "admin can see all of them)."
+        )
+    ),
+    retrieve=extend_schema(description="Specific borrowing endpoint."),
+    create=extend_schema(description="Creating a new borrowing endpoint."),
+)
 class BorrowingViewSet(
     mixins.CreateModelMixin,
     mixins.RetrieveModelMixin,
@@ -61,6 +75,26 @@ class BorrowingViewSet(
 
     def perform_create(self, serializer):
         serializer.save(user_id=self.request.user)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="user_id",
+                description="For admins - filter by user_id (ex. '?user_id=1).",
+                required=False,
+                type=int,
+            ),
+            OpenApiParameter(
+                name="is_active",
+                description="Filter by active borrowings (ex. ?is_active=True).",
+                required=False,
+                type=str,
+            ),
+        ],
+    )
+    def list(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        return super().list(self, request, *args, **kwargs)
+
 
     @action(detail=True, url_path="return", methods=["post"])
     def return_book(self, request, pk=None):
@@ -149,6 +183,16 @@ class BorrowingViewSet(
         )
 
 
+@extend_schema_view(
+    list=extend_schema(
+        description=(
+            "All payments endpoint "
+            "(User can see only own payments, "
+            "admin can see all of them)."
+        )
+    ),
+    retrieve=extend_schema(description="Endpoint for getting a specific payment."),
+)
 class PaymentViewSet(
     mixins.RetrieveModelMixin,
     mixins.ListModelMixin,
