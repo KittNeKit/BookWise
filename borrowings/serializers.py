@@ -46,7 +46,6 @@ class BorrowingSerializer(serializers.ModelSerializer):
             user=validated_data["user_id"],
             borrowing=borrowing
         )
-        print(stripe_session["payment_status"])
         return borrowing
 
 
