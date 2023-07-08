@@ -29,9 +29,9 @@ from borrowings.stripe import create_stripe_session
 @extend_schema_view(
     list=extend_schema(
         description=(
-            "All borrowings in the library endpoint "
-            "(User can see only own borrowings, "
-            "admin can see all of them)."
+                "All borrowings in the library endpoint "
+                "(User can see only own borrowings, "
+                "admin can see all of them)."
         )
     ),
     retrieve=extend_schema(description="Specific borrowing endpoint."),
@@ -94,7 +94,6 @@ class BorrowingViewSet(
     )
     def list(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         return super().list(self, request, *args, **kwargs)
-
 
     @action(detail=True, url_path="return", methods=["post"])
     def return_book(self, request, pk=None):
@@ -186,9 +185,9 @@ class BorrowingViewSet(
 @extend_schema_view(
     list=extend_schema(
         description=(
-            "All payments endpoint "
-            "(User can see only own payments, "
-            "admin can see all of them)."
+                "All payments endpoint "
+                "(User can see only own payments, "
+                "admin can see all of them)."
         )
     ),
     retrieve=extend_schema(description="Endpoint for getting a specific payment."),
