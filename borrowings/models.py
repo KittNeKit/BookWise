@@ -34,4 +34,4 @@ class Payment(models.Model):
     borrowing_id = models.ForeignKey(Borrowing, on_delete=models.CASCADE)
     session_url = models.CharField(max_length=500, null=True, blank=True)
     session_id = models.CharField(max_length=500, null=True, blank=True)
-    to_pay = models.DecimalField(decimal_places=2, max_digits=4)
+    to_pay = models.DecimalField(decimal_places=2, max_digits=10)
