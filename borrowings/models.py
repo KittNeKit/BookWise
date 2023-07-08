@@ -18,3 +18,20 @@ class Borrowing(models.Model):
         on_delete=models.CASCADE,
         related_name="borrowing"
     )
+
+
+class Payment(models.Model):
+    class StatusChoice(models.TextChoices):
+        PENDING = "Pending"
+        PAID = "Paid"
+
+    class TypeStatus(models.TextChoices):
+        PAYMENT = "Payment"
+        FINE = "Fine"
+
+    status = models.CharField(max_length=50, choices=StatusChoice.choices)
+    type = models.CharField(max_length=50, choices=TypeStatus.choices)
+    borrowing_id = models.ForeignKey(Borrowing, on_delete=models.CASCADE)
+    session_url = models.CharField(max_length=500, null=True, blank=True)
+    session_id = models.CharField(max_length=500, null=True, blank=True)
+    to_pay = models.DecimalField(decimal_places=2, max_digits=4)

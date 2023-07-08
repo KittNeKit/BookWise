@@ -1,10 +1,11 @@
 from rest_framework import routers
 
-from borrowings.views import BorrowingViewSet
+from borrowings.views import BorrowingViewSet, PaymentViewSet
 
 app_name = "borrowings"
 
 router = routers.DefaultRouter()
-router.register("", BorrowingViewSet)
+router.register("borrowings", BorrowingViewSet)
+router.register("payments", PaymentViewSet)
 
 urlpatterns = [] + router.urls
