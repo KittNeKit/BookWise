@@ -12,8 +12,8 @@ def create_stripe_session(
         is_fine: bool,
 ):
     total_price = (
-          borrowing.expected_return_date - borrowing.borrow_date
-    ).days * borrowing.book_id.daily_fee
+                          borrowing.expected_return_date - borrowing.borrow_date
+                  ).days * borrowing.book_id.daily_fee
 
     text = "Borrowing"
 
@@ -29,7 +29,7 @@ def create_stripe_session(
                 "price_data": {
                     "currency": "usd",
                     "product_data": {
-                      "name": f"{text} of {borrowing.book_id.title} by {borrowing.user_id}"
+                        "name": f"{text} of {borrowing.book_id.title} by {borrowing.user_id}"
                     },
                     "unit_amount": int(total_price * 100),
                 },

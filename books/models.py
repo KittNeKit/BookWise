@@ -22,11 +22,11 @@ class Book(models.Model):
             raise ValidationError(f"Do not enough {self.title} book in inventory")
 
     def save(
-        self,
-        force_insert=False,
-        force_update=False,
-        using=None,
-        update_fields=None,
+            self,
+            force_insert=False,
+            force_update=False,
+            using=None,
+            update_fields=None,
     ):
         self.full_clean()
         return super(Book, self).save(

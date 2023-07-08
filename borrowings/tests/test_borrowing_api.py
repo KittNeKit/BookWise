@@ -132,10 +132,8 @@ class AuthenticatedBorrowingApiTests(TestCase):
         self.assertEqual(payment.status, "PENDING")
         self.assertEqual(payment.type, "PAYMENT")
 
-
         self.assertIsNotNone(payment.session_id)
         self.assertIsNotNone(payment.session_url)
-
 
 
 class AdminBorrowingApiTests(TestCase):
