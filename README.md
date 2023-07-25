@@ -1,4 +1,4 @@
-# Library system API
+# BookWise
 API service for library management written on DRF
 
 ## Features
@@ -8,14 +8,14 @@ API service for library management written on DRF
 - CRUD for Users Service
 - Telegram notification!
 - Notification for admin about new borrowing or new payment paid
-- Executes every-day task for monitoring overdue borrowings.
+- Executes everyday tasks for monitoring overdue borrowings.
 - Return book functionality
-- Automatically create fine payment if user returned a book after expected return date.
+- Automatically create a fine payment if the user returned a book after the expected return date.
 - Documentation is located at /api/doc/swagger/
 
 
 ## Installing using GitHub:
-Install PostgresSQL and create db
+Install PostgreSQL and create DB
 
 1. Clone the repository:
 
@@ -87,4 +87,4 @@ email = user@test.com
 password = user123123
 ```
 
-or register you own user via /api/users/ and get access token
+or register your own user via /api/users/ and get an access token
